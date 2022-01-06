@@ -6,12 +6,9 @@ It will give the locations of the blocks.
 We can then use this to fine-tune calibration.
 """
 
-import time
-
 # import the necessary packages
 import numpy as np
 import argparse
-import glob
 import cv2
 import math
 from calibrate.rect import Rect
@@ -310,28 +307,3 @@ def convert_to_grayscale(arr):
     arr[:,:,1] = gray
     arr[:,:,2] = gray
     return arr
-
-
-# run as python -m calibrate.blockmatch -i "D:/dev/tetrisfish/Images/Callibration/templates"
-if __name__ == '__main__':
-    # construct the argument parser and parse the arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--images", required=True,
-        help="Path to images where template will be matched")
-    args = vars(ap.parse_args())
-
-    print ("testing test folder")
-    for imagePath in glob.glob(args["images"] + "/*.png"):
-        t = time.time()
-        # load the image, convert it to grayscale, and initialize the
-        # bookkeeping variable to keep track of the matched region
-        image = cv2.imread(imagePath,0)
-        dims = list(image.shape)        
-        #swap xy lol, opencv ftw
-        dims[1], dims[0] = (int(dims[0] * (BLOCKMATCH_SCALE_FACTOR / 2.0)),
-                           int(dims[1] * (BLOCKMATCH_SCALE_FACTOR / 2.0)))
-        
-        image = cv2.resize(image, dims)
-        result = find_piece(image)
-        print (imagePath, result)
-        print ("Time:", time.time() - t)
