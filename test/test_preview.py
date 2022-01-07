@@ -15,6 +15,7 @@ from calibrate.rect import Rect
 ROOT = "test/image/preview/"
 
 def single_preview(image_name, reference_result):
+    
     imagePath = ROOT + image_name
     print(imagePath)
     image = cv2.imread(imagePath, 0)
@@ -29,33 +30,35 @@ def single_preview(image_name, reference_result):
     result = find_piece(image)
     # we must be within 2 nes px of intended result.
     
-    #if reference_result.close_to(result, BLOCK_SIZE_PX / 2, BLOCK_SIZE_PX / 2):
-    #    return
+    if reference_result.close_to(result, BLOCK_SIZE_PX / 4, BLOCK_SIZE_PX / 4):
+        return
     #uh oh, we failed
     image_color = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-    wrong = (result, (0,0,255))
     correct = (reference_result, (0,255,0))
-    draw_and_show_multi(image_color, [wrong, correct])
+    wrong = (result, (0,0,255))
+    
     print (result, reference_result)
+    draw_and_show_multi(image_color, [correct, wrong])
+    
     assert reference_result == result
 
 def test_emu():
     single_preview("test1.png", Rect(4, 151, 280, 286))
 
 def test_harry1():
-    single_preview("test4.png", Rect(-1, 147, 283, 283))
+    single_preview("test4.png", Rect(2, 147, 283, 283))
 
 def test_harry2():
-    single_preview("test5.png", Rect(13, 151, 275, 281))
+    single_preview("test5.png", Rect(13, 151, 275, 279))
 
 def test_harry3():
-    single_preview("test6.png", Rect(9, 152, 278, 279))
+    single_preview("test6.png", Rect(9, 152, 278, 277))
 
 def test_harry4():
-    single_preview("test7.png", Rect(1, 147, 285, 286))
+    single_preview("test7.png", Rect(1, 147, 280, 286))
 
 def test_harry5():
     single_preview("test8.png", Rect(4, 158, 279, 270))
 
 def test_harry6():
-    single_preview("test9.png", Rect(-2, 144, 265, 276))
+    single_preview("test9.png", Rect(2, 144, 265, 276))
