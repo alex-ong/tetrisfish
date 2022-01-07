@@ -45,14 +45,27 @@ PIECE_TYPES = {(4,1): "I",
                (2,2): "O"
               }
 
+def draw_and_show_multi(image, rectangles):
+    """ 
+    Draws multiple rectangles and then shows them.
+    Expects tuples of (rect, color)
+    """
+    image = image.copy()
+    for rect, color in rectangles:
+        l, t, r, b = rect.to_array()
+        cv2.rectangle(image,(l,t),(r,b),color, 1)
+    show_image(image)
+            
 def draw_and_show(image, rect_xywh, color=(0,0,255)):
+    
     if isinstance(rect_xywh, Rect):
         l,t,r,b = rect_xywh.to_array()
-    else:        
+    else:
         l,t,w,h = rect_xywh
         r,b = l+w, t+h
         
     image = image.copy()
+    
     cv2.rectangle(image,(l,t),(r,b),color, 1)
     show_image(image)
 

@@ -2,6 +2,7 @@
 Rect class.
 I'm sure that pygame has one but lets make our own one.
 """
+import math
 class Rect:
     def __init__(self, left, top, right, bottom):
         self.left = left
@@ -80,6 +81,20 @@ class Rect:
         ydist = (you[1] - point[1])
         result = xdist*xdist + ydist*ydist
         return result
+    
+    def close_to(self, other, x_delta, y_delta):
+        """
+        Returns whether this rect is close to another rect
+        """
+        if abs(self.left - other.left) > x_delta:
+            return False
+        if abs(self.right - other.right) > x_delta:
+            return False
+        if abs(self.top - other.top) > y_delta:
+            return False
+        if abs(self.bottom - other.bottom) > y_delta:
+            return False
+        return True
 
 def lerp(small, big, value):
     return small + (big-small) * value
